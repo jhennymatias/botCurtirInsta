@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
+import random
 
 class instaBot:
     def __init__(self, username, password):
@@ -19,14 +20,31 @@ class instaBot:
         senha.send_keys(self.password)
         senha.send_keys(Keys.RETURN)
         time.sleep(5)
+        self.curtir_fotos('balneariogaivota')
 
-    def curtir_fotos(self, hashtag):
+    def curtir_fotos(self, hashtag, likes=10):
         driver = self.driver
-        driver.get('https://www.instagram.com/explore/tags/sombriosc/')         
+        driver.get('https://www.instagram.com/explore/tags/'+hashtag+'/')         
         time.sleep(3)
-        for i in range(1,3):
-            driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+        driver.find_element_by_class_name('v1Nh3').click() # click on photo to open and upload
+        item = 1
+        while item <= likes: # loop with how many photos to like
+            try:
+                time.sleep(2)
+                driver.find_element_by_class_name('fr66n').click() # click the like button
+                time.sleep(random.randint(40, 70)) # break time between likes and comment due to instagram policy against bots
+                driver.find_element_by_class_name('coreSpriteRightPaginationArrow').click() # click on next photo button
+                item = item + 1
+            except:
+                time.sleep(60)
+                
+        print(f'Number of photos liked: \033[0;33m{item - 1}\033[m')
+        
+def main():
+    user = input("Digite o usuario: ")
+    senha = input("Digite a senha: ")
+    insta = instaBot(user, senha)
+    insta.Login()
 
-insta = instaBot('user', 'senha')
-insta.Login()
-insta.curtir_fotos()
+if __name__ == "__main__":
+    main()
