@@ -20,12 +20,10 @@ class instaBot:
         senha.send_keys(self.password)
         senha.send_keys(Keys.RETURN)
         time.sleep(5)    
-        qtd = input("Quantas fotos deseja curtir? ")
-        hashtag = input("Qual a hashtag que você quer curtir? ")
-        self.curtir_fotos(hashtag, qtd)
+        self.curtir_fotos('araranguasc')
         
         
-    def curtir_fotos(self, hashtag, likes):
+    def curtir_fotos(self, hashtag, likes = 20):
         driver = self.driver
         driver.get('https://www.instagram.com/explore/tags/'+hashtag+'/')         
         time.sleep(3)
